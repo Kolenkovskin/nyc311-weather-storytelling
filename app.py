@@ -84,7 +84,6 @@ def plot_main(agg: pd.DataFrame) -> plt.Figure:
 def main() -> None:
     st.set_page_config(page_title="NYC 311 × Weather", layout="centered")
     st.title(APP_TITLE)
-    st.info(f"RUNNING FILE: {__file__}")
 
     st.markdown(
         """
