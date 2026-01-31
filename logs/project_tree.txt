@@ -1,0 +1,48 @@
+﻿Get-ChildItem "C:\Users\User\PycharmProjects\analytics-storytelling" -Recurse |
+Where-Object {
+    $_.FullName -match "\\analytics-storytelling(\\checks|\\data)?\\" -and
+    $_.FullName -notmatch "\\\.venv\\" -and
+    $_.FullName -notmatch "\\\.git\\" -and
+    $_.FullName -notmatch "\\__pycache__\\" -and
+    $_.FullName -notmatch "\\\.idea\\"
+} |
+Select-Object FullName |
+Out-File "C:\Users\User\PycharmProjects\analytics-storytelling\logs\project_tree.txt" -Encoding UTF8
+
+
+
+
+FullName                                                                                   
+--------                                                                                   
+C:\Users\User\PycharmProjects\analytics-storytelling\.idea                                 
+C:\Users\User\PycharmProjects\analytics-storytelling\.venv                                 
+C:\Users\User\PycharmProjects\analytics-storytelling\checks                                
+C:\Users\User\PycharmProjects\analytics-storytelling\data                                  
+C:\Users\User\PycharmProjects\analytics-storytelling\logs                                  
+C:\Users\User\PycharmProjects\analytics-storytelling\app.py                                
+C:\Users\User\PycharmProjects\analytics-storytelling\img.png                               
+C:\Users\User\PycharmProjects\analytics-storytelling\noise_brooklyn_2023_check.ipynb       
+C:\Users\User\PycharmProjects\analytics-storytelling\noise_brooklyn_2023_hypothesis.ipynb  
+C:\Users\User\PycharmProjects\analytics-storytelling\np`s_pd`s_imports_&_pips.ipynb        
+C:\Users\User\PycharmProjects\analytics-storytelling\nyc311_download_noise_brooklyn_2023.py
+C:\Users\User\PycharmProjects\analytics-storytelling\README.md                             
+C:\Users\User\PycharmProjects\analytics-storytelling\search_datasets_multi.py              
+C:\Users\User\PycharmProjects\analytics-storytelling\wb_download_indicator.py              
+C:\Users\User\PycharmProjects\analytics-storytelling\wb_prepare_countries_only.py          
+C:\Users\User\PycharmProjects\analytics-storytelling\weather_kjfk_2023_quality_audit.ipynb 
+C:\Users\User\PycharmProjects\analytics-storytelling\weather_prepare_hourly_nyc_2023.py    
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\aggregate_weather_hourly.py    
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\aggregate_weather_kjfk_hourl...
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\check_time_alignment.py        
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\merge_control_lag_0.py         
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\merge_nyc311_kjfk_hourly.py    
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\prepare_weather_hour.py        
+C:\Users\User\PycharmProjects\analytics-storytelling\checks\README.md                      
+C:\Users\User\PycharmProjects\analytics-storytelling\data\74486094789.csv                  
+C:\Users\User\PycharmProjects\analytics-storytelling\data\nyc311_noise_brooklyn_2023_wit...
+C:\Users\User\PycharmProjects\analytics-storytelling\data\nyc311_noise_brooklyn_2023_wit...
+C:\Users\User\PycharmProjects\analytics-storytelling\data\nyc311_noise_residential_brook...
+C:\Users\User\PycharmProjects\analytics-storytelling\data\weather_kjfk_hourly_2023.csv     
+C:\Users\User\PycharmProjects\analytics-storytelling\logs\project_tree.txt                 
+
+
