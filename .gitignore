@@ -19,3 +19,7 @@ Thumbs.db
 
 # Local data artifacts (если появятся)
 *.log
+
+# local artifacts
+*.pkl
+
