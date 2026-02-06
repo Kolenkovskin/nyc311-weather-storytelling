@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>NYC 311 × Weather — When time-only joins silently fail</title>
+  <meta name="description" content="A one-page engineering-first data story: why time-only joins silently fail without geographic identity, and what we found after fixing it." />
+
+  <!-- Open Graph (LinkedIn preview) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="NYC 311 × Weather: When time-only joins silently fail (and what we found after fixing it)" />
+  <meta property="og:description" content="Engineering-first data story (no ML): the ‘time-only join’ pitfall, a contract-valid dataset, and a single supported hypothesis." />
+  <meta property="og:image" content="og-image.png" />
+  <meta property="og:image:alt" content="Chart: Residential noise complaints vs temperature by time of day (Brooklyn, 2023)" />
+
+  <!-- Twitter (harmless for LinkedIn, useful elsewhere) -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NYC 311 × Weather — time-only joins silently fail" />
+  <meta name="twitter:description" content="A one-page engineering-first data story (no ML) with a single supported hypothesis." />
+  <meta name="twitter:image" content="og-image.png" />
+
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.55;
+      color: #111;
+      background: #fff;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+    h1 { font-size: 44px; line-height: 1.1; margin: 0 0 12px; }
+    .subtitle { font-size: 16px; color: #444; margin: 0 0 26px; }
+    hr { border: 0; border-top: 1px solid #e6e6e6; margin: 28px 0; }
+    .card {
+      border: 1px solid #e6e6e6;
+      border-radius: 14px;
+      padding: 18px 18px;
+      background: #fafafa;
+      margin: 18px 0;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      color: #333;
+      background: #fff;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    ul { margin: 10px 0 0 18px; }
+    .quote {
+      border-left: 4px solid #ddd;
+      padding-left: 14px;
+      color: #333;
+      margin: 16px 0;
+      font-style: italic;
+    }
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    a.btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #111;
+      color: #111;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a.btn.secondary {
+      border-color: #ddd;
+      color: #111;
+      background: #fff;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 14px;
+      border: 1px solid #e6e6e6;
+    }
+    .small { font-size: 13px; color: #555; }
+    footer { margin-top: 34px; color: #666; font-size: 13px; }
+    code { background: #f3f3f3; padding: 2px 6px; border-radius: 8px; }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <h1>NYC 311 × Weather: When time-only joins silently fail (and what we found after fixing it)</h1>
+    <p class="subtitle">A one-page engineering-first data story. No ML. No dashboards. Just a contract-valid dataset and one hypothesis.</p>
+
+    <div>
+      <span class="pill">Python</span>
+      <span class="pill">Pandas</span>
+      <span class="pill">SQL mindset</span>
+      <span class="pill">Data validation</span>
+      <span class="pill">Time zone / DST</span>
+      <span class="pill">Storytelling</span>
+    </div>
+
+    <hr />
+
+    <h2>Dataset (canonical)</h2>
+    <div class="card">
+      <ul>
+        <li><strong>NYC 311</strong>: Brooklyn · Noise – Residential · 2023 · <strong>86,040</strong> rows</li>
+        <li><strong>Weather</strong>: NOAA ISD · Station <strong>KJFK (744860-94789)</strong> · 2023 · hourly</li>
+        <li>Join: <code>m:1</code> by <strong>NYC local hour</strong> (many complaints per hour, one weather record)</li>
+      </ul>
+    </div>
+
+    <h2>Key engineering lesson</h2>
+    <p class="quote">
+      My first weather dataset looked clean and hourly, but turned out unusable because it had no geographic identity.
+      This is why time-only joins silently fail.
+    </p>
+
+    <hr />
+
+    <h2>Hypothesis</h2>
+    <div class="card">
+      <p><strong>Residential noise complaints in Brooklyn increase with temperature — but only during evening and night hours.</strong></p>
+      <p class="small">I do not claim causality. I only check whether the pattern is present in a contract-valid dataset.</p>
+    </div>
+
+    <h2>Evidence</h2>
+    <p class="small">Preview chart used for LinkedIn (same story as the Streamlit app):</p>
+    <img src="og-image.png" alt="Residential noise complaints vs temperature by time of day (Brooklyn, 2023)" />
+
+    <hr />
+
+    <h2>Conclusion</h2>
+    <div class="card">
+      <p>The hypothesis is <strong>supported</strong>:</p>
+      <ul>
+        <li>During <strong>daytime</strong>, complaint volume is relatively stable across temperatures.</li>
+        <li>During <strong>evening and night</strong>, higher temperatures are associated with a sharp increase in complaints.</li>
+      </ul>
+      <p class="small">The signal appears only when weather conditions intersect with human activity patterns.</p>
+    </div>
+
+    <h2>What I deliberately did NOT do</h2>
+    <div class="card">
+      <ul>
+        <li>No correlation coefficients, p-values, or regressions</li>
+        <li>No ML / prediction</li>
+        <li>No “EDA fishing” with dozens of charts</li>
+        <li>No causal claims</li>
+      </ul>
+    </div>
+
+    <hr />
+
+    <h2>Interactive version</h2>
+    <p class="small">If you want the interactive controls (temperature bin size), open the Streamlit app:</p>
+    <div class="cta">
+      <a class="btn" href="https://nyc311-weather-storytelling-bi8gigbkpatsp232yzw32i.streamlit.app/" target="_blank" rel="noopener">Open Streamlit app</a>
+      <a class="btn secondary" href="https://github.com/Kolenkovskin/nyc311-weather-storytelling" target="_blank" rel="noopener">Open GitHub repo</a>
+    </div>
+
+    <footer>
+      <p>PORTFOLIO-2026.02.01 · NYC 311 × NOAA ISD (KJFK) · engineering-first storytelling</p>
+    </footer>
+  </main>
+</body>
+</html>
