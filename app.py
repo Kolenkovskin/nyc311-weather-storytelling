@@ -130,7 +130,7 @@ This is a **single-hypothesis story** (no ML, no dashboards).
         """
 **Residential noise complaints in Brooklyn increase with temperature — but only during evening and night hours.**
 
-We do **not** claim causality. We only check whether the pattern is present in a contract-valid dataset.
+I do **not** claim causality. I only check whether the pattern is present in a contract-valid dataset.
 """
     )
 
@@ -152,7 +152,7 @@ The signal appears only when weather conditions intersect with human activity pa
 """
     )
 
-    with st.expander("What we deliberately did NOT do", expanded=False):
+    with st.expander("What I deliberately did NOT do", expanded=False):
         st.markdown(
             """
 - No correlation coefficients, p-values, or regressions  
