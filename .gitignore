@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 
@@ -23,3 +23,7 @@ Thumbs.db
 # local artifacts
 *.pkl
 
+# Сырые выгрузы: качаются скриптами, в репозитории не хранятся.
+# Канонический датасет — исключение, он нужен приложению и остаётся в гите.
+data/*.csv
+!data/nyc311_noise_brooklyn_2023_with_weather_canonical.csv
